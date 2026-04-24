@@ -9,7 +9,8 @@ datasource db {
 }
 
 model User {
-  id            Int       @id  @default(autoincrement())
+  id            String       @id  @default(uuid())
+  name          String
   email         String    @unique
   password      String
   firstName     String    
@@ -33,14 +34,14 @@ enum Gender {
 }
 
 model Channel {
-  id                Int     @id   @default(autoincrement())
+  id                String     @id   @default(uuid())
   channelName       String 
   banner            String?
   profilePicture    String?
   description       String?
   subscriberCount   Int     @default(0)
+  userId            String     @unique
   user              User    @relation(fields: [userId], references: [id])
-  userId            Int     @unique
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
 
@@ -50,9 +51,9 @@ model Channel {
 }
 
 model Subscription {
-  id                Int     @id   @default(autoincrement())
-  channelId         Int
-  userId            Int
+  id                String     @id   @default(uuid())
+  channelId         String
+  userId            String
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
 
@@ -63,8 +64,8 @@ model Subscription {
 }
 
 model Upload {
-  id                Int   @id  @default(autoincrement())
-  channelId         Int
+  id                String   @id  @default(ulid())
+  channelId         String
   slug              String @unique
   videoUrl          String
   thumbnail         String?
@@ -91,9 +92,9 @@ enum Type {
 }
 
 model Like {
-  id                Int    @id   @default(autoincrement())
-  userId            Int
-  uploadId          Int
+  id                String    @id   @default(uuid())
+  userId            String
+  uploadId          String
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
 
@@ -104,10 +105,10 @@ model Like {
 }
 
 model Comment {
-  id                Int     @id   @default(autoincrement())
+  id                String     @id   @default(ulid())
   comment           String
-  userId            Int
-  uploadId          Int
+  userId            String
+  uploadId          String
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
 
@@ -116,9 +117,9 @@ model Comment {
 }
 
 model WatchHistory {
-  id                Int     @id   @default(autoincrement())
-  userId            Int
-  uploadId          Int
+  id                String     @id   @default(uuid())
+  userId            String
+  uploadId          String
   watchedAt         DateTime @default(now())
 
   user              User    @relation(fields: [userId], references: [id])
