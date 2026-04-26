@@ -1,11 +1,16 @@
 import express from "express";
+import { getSingleVideo, uploadVideo } from "../controllers/video.controller";
+import { uploadVideoAndThumbnail } from "../config/multer.upload";
+import { auth } from "../middlewares/auth";
 
 const router = express.Router();
 
 // Upload Video
-router.post("/", (req, res) => {
-    return res.send();
-});
+router.post(
+    "/", 
+    auth, 
+    uploadVideo
+);
 
 // Get Videos 
 router.get("/", (req, res) => {
@@ -13,9 +18,7 @@ router.get("/", (req, res) => {
 });
 
 // Get Single Video
-router.get("/:id", (req, res) => {
-    return res.send();
-});
+router.get("/:id", getSingleVideo);
 
 // Delete Video
 router.delete("/:id", (req, res) => {
