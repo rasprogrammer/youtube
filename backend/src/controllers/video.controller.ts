@@ -6,6 +6,8 @@ import { createUploadSchema, uploadParamsSchema } from "../validations/videoSche
 import { prisma } from "../lib/prisma";
 import { generateSlug } from "../utils/generateSlug";
 import { getChannelId } from "../models/channel.model";
+import { getVideoBySlug } from "../models/video.service";
+import { createLikeOnVideo, likedVideo } from "../models/like.model";
 // import { uploadImage, uploadVideoFile } from "../services/upload.service";
 
 
@@ -93,15 +95,13 @@ export const uploadVideo = asyncHandler(
 export const getSingleVideo = asyncHandler(
     async (req: Request, res: Response) => {
 
-        const parsed = uploadParamsSchema.safeParse(req.params);
-        if (!parsed.success) {
+        const slug = req.params.id as string;
+        if (!slug) {
             return res.status(HttpStatus.BAD_REQUEST).json({
                 success: false, 
-                error:  parsed.error.message
+                error: 'Please provide video Id'
             });
         }
-
-        const { slug } = parsed.data;
 
         const video = await prisma.upload.findFirst({
             where: { slug }
@@ -118,6 +118,47 @@ export const getSingleVideo = asyncHandler(
             success: true, 
             message: 'Video fetched successfully',
             data: video
+        });
+    }
+);
+
+export const likeVideo = asyncHandler(
+    async (req: AuthRequest, res: Response) => {
+        // userId
+        const userId = req.auth?.id;
+        const videoId = req.params.id as string;
+
+        if (!userId) {
+            return res.status(HttpStatus.UNAUTHORIZED).json({
+                success: false, 
+                error: 'Unauthorized access'
+            });
+        }
+
+        // videoId
+        if (!videoId) {
+            return res.status(HttpStatus.BAD_REQUEST).json({
+                success: false, 
+                error: 'Video Id not provided'
+            });
+        }
+
+        const video = await getVideoBySlug(videoId);
+        if (!video) {
+            return res.status(HttpStatus.NOT_FOUND).json({
+                success: false, 
+                error: 'Video not available'
+            });
+        }
+
+        const isVideoLiked = await likedVideo(userId, video.id);
+        if (!isVideoLiked) {
+            await createLikeOnVideo(userId, video.id);
+        }
+
+        return res.status(HttpStatus.CREATED).json({
+            success: true,
+            message: 'Video liked successfully'
         });
     }
 );
