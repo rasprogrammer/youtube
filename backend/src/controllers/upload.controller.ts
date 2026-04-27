@@ -6,7 +6,7 @@ import { createUploadSchema, uploadParamsSchema } from "../validations/videoSche
 import { prisma } from "../lib/prisma";
 import { generateSlug } from "../utils/generateSlug";
 import { getChannelId } from "../models/channel.model";
-import { getVideoBySlug } from "../models/video.service";
+import { getUploadBySlug } from "../models/upload.model";
 import { createLikeOnVideo, likedVideo } from "../models/like.model";
 // import { uploadImage, uploadVideoFile } from "../services/upload.service";
 
@@ -95,11 +95,11 @@ export const uploadVideo = asyncHandler(
 export const getSingleVideo = asyncHandler(
     async (req: Request, res: Response) => {
 
-        const slug = req.params.id as string;
+        const slug = req.params.slug as string;
         if (!slug) {
             return res.status(HttpStatus.BAD_REQUEST).json({
                 success: false, 
-                error: 'Please provide video Id'
+                error: 'Please provide video slug'
             });
         }
 
@@ -122,11 +122,11 @@ export const getSingleVideo = asyncHandler(
     }
 );
 
-export const likeVideo = asyncHandler(
+export const likeOnUpload = asyncHandler(
     async (req: AuthRequest, res: Response) => {
         // userId
         const userId = req.auth?.id;
-        const videoId = req.params.id as string;
+        const videoSlug = req.params.slug as string;
 
         if (!userId) {
             return res.status(HttpStatus.UNAUTHORIZED).json({
@@ -135,15 +135,15 @@ export const likeVideo = asyncHandler(
             });
         }
 
-        // videoId
-        if (!videoId) {
+        // videoSlug
+        if (!videoSlug) {
             return res.status(HttpStatus.BAD_REQUEST).json({
                 success: false, 
-                error: 'Video Id not provided'
+                error: 'Video slug not provided'
             });
         }
 
-        const video = await getVideoBySlug(videoId);
+        const video = await getUploadBySlug(videoSlug);
         if (!video) {
             return res.status(HttpStatus.NOT_FOUND).json({
                 success: false, 

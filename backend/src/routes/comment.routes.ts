@@ -1,14 +1,13 @@
 import express from "express";
+import { createCommentOnUpload } from "../controllers/comment.controller";
 
 const router = express.Router();
 
-// Create comment
-router.post("", (req, res) => {
-    return res.send();
-});
+// Create comment on video
+router.post("/:slug", createCommentOnUpload);
 
 // Reply comment
-router.post("/:id/reply", (req, res) => {
+router.post("/:commentId/reply", (req, res) => {
     return res.send();
 });
 

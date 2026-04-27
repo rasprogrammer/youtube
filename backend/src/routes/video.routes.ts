@@ -1,5 +1,5 @@
 import express from "express";
-import { getSingleVideo, likeVideo, uploadVideo } from "../controllers/video.controller";
+import { getSingleVideo, likeOnUpload, uploadVideo } from "../controllers/upload.controller";
 import { uploadVideoAndThumbnail } from "../config/multer.upload";
 import { auth } from "../middlewares/auth";
 
@@ -18,7 +18,7 @@ router.get("/", (req, res) => {
 });
 
 // Get Single Video
-router.get("/:id", getSingleVideo);
+router.get("/:slug", getSingleVideo);
 
 // Delete Video
 router.delete("/:id", (req, res) => {
@@ -36,10 +36,10 @@ router.get('/:id/thumbnail', (req, res) => {
 })
 
 // Like video
-router.post("/:id/like", auth, likeVideo);
+router.post("/:slug/like", auth, likeOnUpload);
 
 // Remove like from video 
-router.delete("/:id/like", (req, res) => {
+router.delete("/:slug/like", (req, res) => {
     return res.send();
 });
 
