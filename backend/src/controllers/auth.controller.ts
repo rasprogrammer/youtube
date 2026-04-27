@@ -13,7 +13,7 @@ export const signup = async (req: Request, res: Response) => {
         if (!parsedData.success) {
             res.status(HttpStatus.BAD_REQUEST).json({
                 success: false,
-                error: parsedData.error,
+                error: parsedData.error.issues[0]?.message
             });
             return;
         }
@@ -61,7 +61,7 @@ export const signin = async (req: Request, res: Response) => {
         if (!parsedData.success) {
             res.status(HttpStatus.BAD_REQUEST).json({
                 success: false,
-                error: parsedData.error
+                error: parsedData.error.issues[0]?.message
             });
             return;
         }
