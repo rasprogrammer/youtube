@@ -92,6 +92,25 @@ export const uploadVideo = asyncHandler(
     }
 );
 
+export const getFeedVideos = asyncHandler(
+    async (req: Request, res: Response) => {
+        
+        const videos = await prisma.upload.findMany({
+            select: { 
+                title: true, description: true, slug: true, views: true, createdAt: true,
+                channel: { select: { channelName: true, profilePicture: true } }
+            },
+            take: 20
+        });
+
+        return res.status(HttpStatus.OK).json({
+            success: true, 
+            message: 'Videos fetched successfully',
+            videos
+        });
+    }
+)
+
 export const getSingleVideo = asyncHandler(
     async (req: Request, res: Response) => {
 

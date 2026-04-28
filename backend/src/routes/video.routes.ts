@@ -1,5 +1,5 @@
 import express from "express";
-import { getSingleVideo, likeOnUpload, uploadVideo } from "../controllers/upload.controller";
+import { getFeedVideos, getSingleVideo, likeOnUpload, uploadVideo } from "../controllers/upload.controller";
 import { uploadVideoAndThumbnail } from "../config/multer.upload";
 import { auth } from "../middlewares/auth";
 
@@ -11,6 +11,9 @@ router.post(
     auth, 
     uploadVideo
 );
+
+// Get videos feed 
+router.get("/feed", getFeedVideos);
 
 // Get Videos 
 router.get("/", (req, res) => {
@@ -43,9 +46,5 @@ router.delete("/:slug/like", (req, res) => {
     return res.send();
 });
 
-// Get videos feed 
-router.get("/feed", (req, res) => {
-    return res.send();
-});
 
 export default router;
