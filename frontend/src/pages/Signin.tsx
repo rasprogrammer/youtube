@@ -13,8 +13,9 @@ export default function Signin() {
 
     const signinMutation = useMutation({
         mutationFn: signinUser,
-        onSuccess: () => {
+        onSuccess: (data) => {
             toast.success('User Signed in Successfully');
+            localStorage.setItem('token', `Bearer ${data.token}`);
             navigate('/home');
         }, 
         onError: err => {
@@ -90,7 +91,7 @@ export default function Signin() {
                             type="submit"
                             className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                         >
-                            Sign up
+                            Sign In
                         </button>
                     </div>
                 </form>

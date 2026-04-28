@@ -1,6 +1,11 @@
+import { useAuth } from "../../context/AuthContext";
+import ProtectRoute from "../guard/ProtectRoute";
 
 
 export default function Header() {
+
+    const { user } = useAuth();
+
     return (
         <header className="header w-full h-16 bg-gray-900 text-white flex items-center justify-between px-4">
             <h1 className="text-xl font-bold">YouTube</h1>
@@ -9,7 +14,12 @@ export default function Header() {
             </div>
             <div>
                 {/* User profile or other header icons can go here */}
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Sign In</button>
+                {user ? 
+                    <span>Welcome, {user.name}</span>
+                    : 
+                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Sign In</button>
+                }
+                    
             </div>
         </header>
     )

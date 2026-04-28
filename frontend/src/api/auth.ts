@@ -38,7 +38,6 @@ export const signupUser = async (userData : {
     }
 };
 
-
 export const signinUser = async (credentials: {
     email: string;
     password: string;
@@ -60,3 +59,20 @@ export const signinUser = async (credentials: {
         }
     }
 }
+
+export const authorize = async (userData: { token: string }) => {
+  try {
+    const response = await axios.get(`${HTTP_URL}/auth/me`, {
+      headers: {
+        Authorization: userData.token,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    const err = error as AuthError;
+    if (axios.isAxiosError(err)) {
+      throw new Error('Authorization failed');
+    }
+  }
+};
