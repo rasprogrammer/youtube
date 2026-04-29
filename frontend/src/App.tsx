@@ -19,7 +19,7 @@ function App() {
           <Route path="/upload" element={<UploadVideo />} />
 
           <Route element={<WatchPageLayout />}>
-            <Route path="/watch/:id" element={<WatchPage />} />
+            <Route path="/watch/:slug" element={<WatchPage />} />
           </Route>
 
           <Route element={<MainLayout />} >

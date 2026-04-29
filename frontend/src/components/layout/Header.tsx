@@ -1,10 +1,12 @@
+import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import ProtectRoute from "../guard/ProtectRoute";
 
 
 export default function Header() {
 
-    const { user } = useAuth();
+    // const { user } = useAuth();
+    const user = { profilePic: "https://i.pravatar.cc/40?img=1", name: "John Doe" }; 
 
     return (
         <header className="header w-full h-16 bg-gray-900 text-white flex items-center justify-between px-4">
@@ -15,7 +17,10 @@ export default function Header() {
             <div>
                 {/* User profile or other header icons can go here */}
                 {user ? 
-                    <span>Welcome, {user.name}</span>
+                    <span className="flex items-center gap-4">
+                    <p className="flex items-center gap-2"><span><img src={user.profilePic} alt={user.name} className="w-8 h-8 rounded-full" /></span>{user.name}</p>
+                    <Link to="/upload" className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ">Upload</Link>
+                    </span>
                     : 
                     <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Sign In</button>
                 }

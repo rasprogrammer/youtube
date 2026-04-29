@@ -123,6 +123,10 @@ export const getSingleVideo = asyncHandler(
         }
 
         const video = await prisma.upload.findFirst({
+            select: { 
+                title: true, description: true, slug: true, views: true, createdAt: true,
+                channel: { select: { channelName: true, profilePicture: true } }
+            },
             where: { slug }
         });
 
@@ -136,7 +140,7 @@ export const getSingleVideo = asyncHandler(
         return res.status(HttpStatus.OK).json({
             success: true, 
             message: 'Video fetched successfully',
-            data: video
+            video
         });
     }
 );
