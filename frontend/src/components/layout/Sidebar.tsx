@@ -20,7 +20,7 @@ export default function Sidebar() {
     ];
 
     return (
-        <div className="sidebar w-40 h-screen bg-gray-800 text-white">
+        <div className="sidebar h-screen bg-gray-800 text-white">
             <ul className="sidebar-list">
                 {menuLinks.map((link, index) => (
                     <Link to={link.path} key={index} className="flex items-center gap-2 p-2 hover:bg-gray-700 cursor-pointer">
