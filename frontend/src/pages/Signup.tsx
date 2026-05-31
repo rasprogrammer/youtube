@@ -4,203 +4,300 @@ import toast from "react-hot-toast";
 import { signupUser } from "../api/auth";
 import { Link, useNavigate } from "react-router-dom";
 
+interface FormErrors {
+  firstName?: string;
+  lastName?: string;
+  gender?: string;
+  dob?: string;
+  email?: string;
+  password?: string;
+}
 
 export default function Signup() {
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [gender, setGender] = useState('');
-    const [dob, setDob] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [errors, setErrors] = useState<{
-        firstName?: string;
-        lastName?: string;
-        gender?: string;
-        dob?: string;
-        email?: string; 
-        password?: string;
-    }>({});
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [gender, setGender] = useState("");
+  const [dob, setDob] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-    const navigate = useNavigate();
+  const [errors, setErrors] = useState<FormErrors>({});
 
-    const signupMutation = useMutation({
-        mutationFn: signupUser,
-        onSuccess: () => {
-            toast.success('User Signed up Successfully');
-            navigate('/signin');
-        }, 
-        onError: (err) => {
-            // setName('');
-            // setEmail('');
-            // setPassword('');
-            toast.error(err.message);
-        }
-    })
+  const navigate = useNavigate();
 
-    const handleSignup = async (e: React.FormEvent) => {
-        e.preventDefault();
+  const signupMutation = useMutation({
+    mutationFn: signupUser,
+    onSuccess: () => {
+      toast.success("User signed up successfully");
+      navigate("/signin");
+    },
+    onError: (error: any) => {
+      toast.error(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Signup failed"
+      );
+    },
+  });
 
-        // Validate input 
-        if (!firstName || !lastName || !gender || !dob || !email || !password) {
-            setErrors({
-                firstName: !firstName ? 'First name is required' : undefined,
-                lastName: !lastName ? 'Last name is required' : undefined,
-                gender: !gender ? 'Gender is required' : undefined,
-                dob: !dob ? 'Date of birth is required' : undefined,
-                email: !email ? 'Email is required' : undefined,
-                password: !password ? 'Password is required' : undefined
-            });
-            return;
-        }
+  const handleSignup = (e: React.FormEvent) => {
+    e.preventDefault();
 
-        // Clear errors 
-        setErrors({}); 
-        const name = `${firstName} ${lastName}`;
+    const newErrors: FormErrors = {};
 
-        signupMutation.mutate({ firstName, lastName, name, gender, dob, email, password });
+    if (!firstName.trim()) {
+      newErrors.firstName = "First name is required";
     }
 
+    if (!lastName.trim()) {
+      newErrors.lastName = "Last name is required";
+    }
 
-    return <>
-        <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-            <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                <h1 className="p-2 text-3xl text-center bg-blue-100 rounded text-white-900 font-bold tracking-tight">YouTube</h1>
-                <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
-                    Sign up for your account
-                </h2>
-            </div>
+    if (!gender) {
+      newErrors.gender = "Gender is required";
+    }
 
-            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form action="#" method="POST" className="space-y-6" onSubmit={handleSignup}>
-                <div>
-                    <label htmlFor="firstName" className="block text-sm/6 font-medium text-gray-900">
-                        First Name
-                    </label>
-                    <div className="mt-2">
-                        <input
-                        id="firstName"
-                        name="firstName"
-                        type="text"
-                        value={firstName}
-                        onChange={e => setFirstName(e.target.value)}
-                        required
-                        autoComplete="given-name"
-                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                        />
-                    </div>
+    if (!dob) {
+      newErrors.dob = "Date of birth is required";
+    }
+
+    if (!email.trim()) {
+      newErrors.email = "Email is required";
+    } else {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!emailRegex.test(email)) {
+        newErrors.email = "Please enter a valid email address";
+      }
+    }
+
+    if (!password) {
+      newErrors.password = "Password is required";
+    } else if (password.length < 8) {
+      newErrors.password = "Password must be at least 8 characters";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setErrors({});
+
+    signupMutation.mutate({
+      firstName,
+      lastName,
+      name: `${firstName} ${lastName}`,
+      gender,
+      dob,
+      email,
+      password,
+    });
+  };
+
+  return (
+    <div className="grid grid-cols-2">
+        <div className="hidden md:block md:col-span-1">
+            <img src="https://plus.unsplash.com/premium_photo-1683287925874-f8b46c6437ae?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" className="w-full h-full object-cover" />
+        </div>
+        <div className="col-span-2 md:col-span-1 lg:col-span-1 min-h-screen px-2 py-2 lg:px-2 flex justify-center items-center">
+            <div>
+                <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+                    <h2 className="text-center text-2xl font-bold text-gray-900">Sign up for your account</h2>
                 </div>
 
-                <div>
-                    <label htmlFor="lastName" className="block text-sm/6 font-medium text-gray-900">
-                        Last Name
-                    </label>
-                    <div className="mt-2">
-                        <input
-                        id="lastName"
-                        name="lastName"
-                        type="text"
-                        value={lastName}
-                        onChange={e => setLastName(e.target.value)}
-                        required
-                        autoComplete="family-name"
-                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                        />
-                    </div>
-                </div>
+                <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+                    <form className="grid grid-cols-2 gap-4" onSubmit={handleSignup}>
+                        {/* First Name */}
+                        <div className="col-span-1">
+                            <label
+                            htmlFor="firstName"
+                            className="block text-sm font-medium text-gray-900"
+                            >
+                            First Name
+                            </label>
 
-                <div>
-                    <label htmlFor="gender" className="block text-sm/6 font-medium text-gray-900">
-                        Gender
-                    </label>
-                    <div className="mt-2">
-                        <select
-                        id="gender"
-                        name="gender"
-                        value={gender}
-                        onChange={e => setGender(e.target.value)}
-                        required
-                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                        >
-                            <option value="">Select Gender</option>
-                            <option value="MALE">Male</option>
-                            <option value="FEMALE">Female</option>
-                            <option value="OTHER">Other</option>
-                        </select>
-                    </div>
-                </div>
+                            <div className="mt-2">
+                            <input
+                                id="firstName"
+                                type="text"
+                                autoComplete="given-name"
+                                value={firstName}
+                                onChange={(e) => setFirstName(e.target.value)}
+                                className="block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-indigo-600 focus:outline-none"
+                            />
+                            </div>
 
-                <div>
-                    <label htmlFor="dob" className="block text-sm/6 font-medium text-gray-900">
-                        Date of Birth
-                    </label>
-                    <div className="mt-2">
-                        <input
-                        id="dob"
-                        name="dob"
-                        type="date"
-                        value={dob}
-                        onChange={e => setDob(e.target.value)}
-                        required
-                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                        />
-                    </div>
-                </div>
+                            {errors.firstName && (
+                            <p className="mt-1 text-sm text-red-500">
+                                {errors.firstName}
+                            </p>
+                            )}
+                        </div>
 
-                <div>
-                    <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
-                        Email address
-                    </label>
-                    <div className="mt-2">
-                        <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        required
-                        autoComplete="email"
-                        value={email}
-                        onChange={e => setEmail(e.target.value)}
-                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                        />
-                    </div>
-                </div>
+                        {/* Last Name */}
+                        <div className="col-span-1">
+                            <label
+                            htmlFor="lastName"
+                            className="block text-sm font-medium text-gray-900"
+                            >
+                            Last Name
+                            </label>
 
-                <div>
-                <div className="flex items-center justify-between">
-                    <label htmlFor="password" className="block text-sm/6 font-medium text-gray-900">
-                    Password
-                    </label>
-                </div>
-                <div className="mt-2">
-                    <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    required
-                    autoComplete="current-password"
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                    />
-                </div>
-                </div>
+                            <div className="mt-2">
+                            <input
+                                id="lastName"
+                                type="text"
+                                autoComplete="family-name"
+                                value={lastName}
+                                onChange={(e) => setLastName(e.target.value)}
+                                className="block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-indigo-600 focus:outline-none"
+                            />
+                            </div>
 
-                <div>
-                <button
-                    type="submit"
-                    className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                >
-                    Sign up
-                </button>
-                </div>
-            </form>
+                            {errors.lastName && (
+                            <p className="mt-1 text-sm text-red-500">
+                                {errors.lastName}
+                            </p>
+                            )}
+                        </div>
 
-            <p className="mt-10 text-center text-sm/6 text-gray-500">
-                I have an account ?{' '}
-                <Link to="/signin" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                Sign in
-                </Link>
-            </p>
+                        {/* Gender */}
+                        <div className="col-span-1">
+                            <label
+                            htmlFor="gender"
+                            className="block text-sm font-medium text-gray-900"
+                            >
+                            Gender
+                            </label>
+
+                            <div className="mt-2">
+                            <select
+                                id="gender"
+                                value={gender}
+                                onChange={(e) => setGender(e.target.value)}
+                                className="block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-indigo-600 focus:outline-none"
+                            >
+                                <option value="">Select Gender</option>
+                                <option value="MALE">Male</option>
+                                <option value="FEMALE">Female</option>
+                                <option value="OTHER">Other</option>
+                            </select>
+                            </div>
+
+                            {errors.gender && (
+                            <p className="mt-1 text-sm text-red-500">
+                                {errors.gender}
+                            </p>
+                            )}
+                        </div>
+
+                        {/* Date of Birth */}
+                        <div className="col-span-1">
+                            <label
+                            htmlFor="dob"
+                            className="block text-sm font-medium text-gray-900"
+                            >
+                            Date of Birth
+                            </label>
+
+                            <div className="mt-2">
+                            <input
+                                id="dob"
+                                type="date"
+                                value={dob}
+                                onChange={(e) => setDob(e.target.value)}
+                                className="block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-indigo-600 focus:outline-none"
+                            />
+                            </div>
+
+                            {errors.dob && (
+                            <p className="mt-1 text-sm text-red-500">
+                                {errors.dob}
+                            </p>
+                            )}
+                        </div>
+
+                        {/* Email */}
+                        <div className="col-span-2">
+                            <label
+                            htmlFor="email"
+                            className="block text-sm font-medium text-gray-900"
+                            >
+                            Email Address
+                            </label>
+
+                            <div className="mt-2">
+                            <input
+                                id="email"
+                                type="email"
+                                autoComplete="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-indigo-600 focus:outline-none"
+                            />
+                            </div>
+
+                            {errors.email && (
+                            <p className="mt-1 text-sm text-red-500">
+                                {errors.email}
+                            </p>
+                            )}
+                        </div>
+
+                        {/* Password */}
+                        <div className="col-span-2">
+                            <label
+                            htmlFor="password"
+                            className="block text-sm font-medium text-gray-900"
+                            >
+                            Password
+                            </label>
+
+                            <div className="mt-2">
+                            <input
+                                id="password"
+                                type="password"
+                                autoComplete="new-password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                className="block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-indigo-600 focus:outline-none"
+                            />
+                            </div>
+
+                            {errors.password && (
+                            <p className="mt-1 text-sm text-red-500">
+                                {errors.password}
+                            </p>
+                            )}
+                        </div>
+
+                        {/* Submit Button */}
+                        <div className="col-span-2">
+                            <button
+                            type="submit"
+                            disabled={signupMutation.isPending}
+                            className="flex w-full justify-center rounded-md bg-indigo-600 px-4 py-2 font-semibold text-white hover:bg-indigo-500 disabled:cursor-not-allowed disabled:opacity-50"
+                            >
+                            {signupMutation.isPending
+                                ? "Signing up..."
+                                : "Sign Up"}
+                            </button>
+                        </div>
+                    </form>
+
+                    <p className="mt-8 text-center text-sm text-gray-500">
+                    Already have an account?{" "}
+                    <Link
+                        to="/signin"
+                        className="font-semibold text-indigo-600 hover:text-indigo-500"
+                    >
+                        Sign in
+                    </Link>
+                    </p>
+                </div>
             </div>
         </div>
-    </>
+    </div>
+  );
 }
