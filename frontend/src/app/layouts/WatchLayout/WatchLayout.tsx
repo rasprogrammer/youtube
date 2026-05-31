@@ -1,13 +1,13 @@
 import { useState } from "react";
-import Header from "./../../../shared/layouts/Header";
-import Sidebar from "./../../../shared/layouts/Sidebar";
+import Header from "../../../shared/layouts/Header";
+import Sidebar from "../../../shared/layouts/Sidebar";
 
 
-export default function MainLayout({children}: {
+export default function WatchLayout({children}: {
     children: React.ReactNode
 }) {
 
-    const [isOpenMenu, setIsOpenMenu] = useState(true);
+    const [isOpenMenu, setIsOpenMenu] = useState(false);
 
     const toggleMenu = () => {
         setIsOpenMenu(!isOpenMenu);
