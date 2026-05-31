@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import VideoCard from "./VideoCard";
-import { videoFeed } from "../../api/videos";
+import { videoFeed } from "../videos";
 
 export default function VideoFeed() {
   const [videos, setVideos] = useState([

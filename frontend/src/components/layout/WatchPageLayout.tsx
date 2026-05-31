@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
-import { recommendationVideos } from "../../api/videos";
+import { recommendationVideos } from "../../features/feeds/videos";
 import Header from "./Header";
 
 type Video = {

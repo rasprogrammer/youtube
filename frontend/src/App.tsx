@@ -22,10 +22,10 @@ function App() {
             <Route path="/watch/:slug" element={<WatchPage />} />
           </Route>
 
-          <Route element={<MainLayout />} >
-            <Route path="/" element={<Home />} />
-            <Route path="*" element={<NotFound />} /> {/* Fallback for 404 */}
-          </Route>
+          {/* Main Layout */}
+          <Route path="/" element={<Home />} />
+          <Route path="*" element={<NotFound />} /> {/* Fallback for 404 */}
+          
       </Routes>
     </BrowserRouter>
   );

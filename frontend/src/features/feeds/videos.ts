@@ -1,6 +1,6 @@
 import axios from "axios"
-import { HTTP_URL } from "../config"
-import { getToken } from "../utils/token"
+import { HTTP_URL } from "../../config"
+import { getToken } from "../../utils/token"
 
 
 export const videoFeed = async () => {

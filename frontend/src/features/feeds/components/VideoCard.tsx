@@ -1,3 +1,4 @@
+import { EllipsisVerticalIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 
 interface VideoCardProps {
@@ -23,13 +24,18 @@ export default function VideoCard({ video, index } : VideoCardProps) {
         <Link to={`/watch/${video.slug}`} className="p-4 hover:bg-gray-300 rounded-lg transition-colors duration-200">
             <div className="video-card cursor-pointer ">
                 <img src={video.thumbnail} alt={video.title} className="w-full h-50 rounded-lg" />
-                <div className="py-2 flex gap-2">
-                    <img src={video.channel.channelPicture} alt="" className="w-8 h-8 rounded-full"/>
+                <div className="flex justify-between py-2 ">
+                    <div className="flex gap-2">
+                        <img src={video.channel.channelPicture} alt="" className="w-8 h-8 rounded-full"/>
+                        <div>
+                            <h3 className="text-lg font-semibold text-md leading-6">{video.title}</h3>
+                            <p className="text-sm text-gray-600">{video.channel.channelName}</p>
+                            {/* time in minutes from created */}
+                            <p className="text-sm text-gray-600">{video.views} • {video.createdAt}</p>
+                        </div>
+                    </div>
                     <div>
-                        <h3 className="text-lg font-semibold text-md leading-6">{video.title}</h3>
-                        <p className="text-sm text-gray-600">{video.channel.channelName}</p>
-                        {/* time in minutes from created */}
-                        <p className="text-sm text-gray-600">{video.views} • {video.createdAt}</p>
+                        <p className="text-sm text-gray-600"><EllipsisVerticalIcon /></p>
                     </div>
                 </div>
             </div>
