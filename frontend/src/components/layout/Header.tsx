@@ -1,11 +1,9 @@
 import { Link } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
 import ProtectRoute from "../guard/ProtectRoute";
 
 
 export default function Header() {
 
-    // const { user } = useAuth();
     const user = { profilePic: "https://i.pravatar.cc/40?img=1", name: "John Doe" }; 
 
     return (

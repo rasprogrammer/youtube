@@ -1,10 +1,16 @@
 import { BellIcon, Menu, Mic, PlusIcon, Search } from "lucide-react";
 import { NavLink } from "react-router-dom";
+import { useCurrentUser } from "../../features/auth/hooks/useCurrentUser";
 
 
 export default function Header({ onClick }: { 
     onClick: () => void 
 }) {
+
+    const { data } = useCurrentUser();
+
+    const user = data?.user || {};
+
     return (<>
         <div className="flex items-center justify-between gap-4 px-4 py-2">
             <div className="flex items-center gap-x-4">
@@ -36,8 +42,16 @@ export default function Header({ onClick }: {
                 <div>
                     <BellIcon />
                 </div>
+                {Object.keys(user).length > 0 ? (
+                    <div className="flex flex-col items-center">
+                        <img src="https://picsum.photos/40/40?random=1" alt="" className="w-8 h-8 rounded-full" /> 
+                        {/* <small>{user.name}</small> */}
+                    </div>
+                    ) : (
+                        <NavLink to="/signin" className="bg-gray-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Sign In</NavLink>
+                    )
+                }
                 <div>
-                    <img src="https://picsum.photos/40/40?random=1" alt="" className="w-8 h-8 rounded-full" />
                 </div>
             </div>
         </div>

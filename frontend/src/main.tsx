@@ -9,10 +9,8 @@ import { AuthProvider } from './context/AuthContext.tsx'
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ReactQueryProvider >
-      <AuthProvider >
         <Toaster position="top-right" />
         <App />
-      </AuthProvider>
     </ReactQueryProvider>
   </StrictMode>,
 )

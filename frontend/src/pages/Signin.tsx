@@ -20,6 +20,7 @@ export default function Signin() {
     mutationFn: (data: SigninPayload) => signinUser(data),
 
     onSuccess: (data: any) => {
+      console.log('data > ', data);
       localStorage.setItem("token", data.token);
 
       toast.success("Signed in successfully");

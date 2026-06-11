@@ -91,27 +91,23 @@ const WatchPageLayout = () => {
         <Outlet />
       </div>
 
-      {/* RIGHT: Sidebar Recommendations */}
-      <aside className="w-full lg:w-[380px]">
-        {/* You can replace this with <RecommendationList /> */}
-        <div className="space-y-4">
-          {recommendations.map((video: Video, index: number) => (
-            <div key={index} className="h-24 bg-gray-200 rounded-lg p-2 hover:bg-gray-300 cursor-pointer" >
-              <div className="flex gap-2">
-                <img src={video.thumbnail} alt={video.title} className="w-32 h-20 object-cover rounded-lg" />
-                <div className="flex flex-col justify-between">
-                  <h3 className="font-bold text-sm">{video.title}</h3>
-                  <div className="text-xs text-gray-500">
-                    <div>{video.channel.channelName}</div>
-                    <div>{video.views} • {video.createdAt}</div>
-                  </div>
-                </div>
-              </div>
+      {/* RIGHT: Recommendation Section */}
+      <div className="flex flex-col gap-4">
+        <h1 className="text-xl font-bold">Recommendations</h1>
+        {recommendations.map((video) => (
+          <div key={video.slug} className="flex gap-2 items-center">
+            <img
+              src={video.thumbnail}
+              alt={video.title}
+              className="w-16 h-16 rounded-md"
+            />
+            <div>
+              <p className="text-sm font-semibold">{video.title}</p>
+              <p className="text-xs text-gray-400">{video.channel.channelName}</p>
             </div>
-          ))}
-        </div>
-      </aside>
-
+          </div>
+        ))}
+      </div>
     </div>
     </>
   );

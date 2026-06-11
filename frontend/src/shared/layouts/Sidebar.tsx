@@ -9,6 +9,7 @@ import {
   Video,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
+import { useCurrentUser } from "../../features/auth/hooks/useCurrentUser";
 
 export default function Sidebar() {
   const menuList = [
@@ -26,6 +27,9 @@ export default function Sidebar() {
     ],
   ];
 
+  const { data } = useCurrentUser();
+  const user = data?.user || null;
+
   const activeLinkClasses =
     "flex items-center gap-4 px-4 py-2 bg-gray-300 rounded-lg mx-2";
 
@@ -36,6 +40,7 @@ export default function Sidebar() {
           <div key={groupIndex}>
             {group.map((item) => {
               const Icon = item.icon;
+              if (groupIndex === 1 && !user && item.path !== "/history") return null;
 
               return (
                 <li key={item.path}>
