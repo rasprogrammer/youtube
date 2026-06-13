@@ -1,15 +1,27 @@
 import { BellIcon, Menu, Mic, PlusIcon, Search } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useCurrentUser } from "../../features/auth/hooks/useCurrentUser";
+import { useChannel } from "../../features/channel/hooks/useChannel";
+import { useAuthStore } from "../../app/store/auth.store";
 
 
 export default function Header({ onClick }: { 
     onClick: () => void 
 }) {
 
-    const { data } = useCurrentUser();
+    const navigate = useNavigate();
 
-    const user = data?.user || {};
+    const token = localStorage.getItem("token") || "";
+    const user = useAuthStore((state) => state.user);
+
+
+    const handleChannelCreate = () => {
+        if (!user) navigate("/signin");
+
+        // Open Modal to create channel 
+
+        navigate("/upload");
+    }
 
     return (<>
         <div className="flex items-center justify-between gap-4 px-4 py-2">
@@ -35,14 +47,18 @@ export default function Header({ onClick }: {
                 </button>
             </div>
             <div className="flex items-center gap-6 px-4">
-                <NavLink to="/upload" className="flex items-center gap-2 px-4 py-2 text-md font-semibold bg-gray-300 rounded-full cursor-pointer">
+                <button 
+                    type="button" 
+                    className="flex items-center gap-2 px-4 py-2 text-md font-semibold bg-gray-300 rounded-full cursor-pointer"
+                    onClick={handleChannelCreate}
+                >
                     <PlusIcon />
                     Create
-                </NavLink>
+                </button>
                 <div>
                     <BellIcon />
                 </div>
-                {Object.keys(user).length > 0 ? (
+                {user ? (
                     <div className="flex flex-col items-center">
                         <img src="https://picsum.photos/40/40?random=1" alt="" className="w-8 h-8 rounded-full" /> 
                         {/* <small>{user.name}</small> */}

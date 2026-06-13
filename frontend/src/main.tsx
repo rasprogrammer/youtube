@@ -7,10 +7,10 @@ import { Toaster } from 'react-hot-toast'
 import { AuthProvider } from './context/AuthContext.tsx'
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
+  // <StrictMode>
     <ReactQueryProvider >
         <Toaster position="top-right" />
         <App />
     </ReactQueryProvider>
-  </StrictMode>,
+  // </StrictMode>,
 )

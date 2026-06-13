@@ -3,9 +3,9 @@ import { HTTP_URL } from "../../../config";
 
 
 export const getMe = async () => {
-    const token : string = localStorage.getItem('token') || '';
-    console.log('token > ', token); 
 
+    const token = localStorage.getItem('token') || '';
+    
     if (!token) {
         throw new Error('Authorization failed');
     }

@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useCurrentUser } from "../../features/auth/hooks/useCurrentUser";
+import { useAuthStore } from "../../app/store/auth.store";
 
 export default function Sidebar() {
   const menuList = [
@@ -27,11 +28,9 @@ export default function Sidebar() {
     ],
   ];
 
-  const { data } = useCurrentUser();
-  const user = data?.user || null;
+  const user = useAuthStore((state) => state.user);
 
-  const activeLinkClasses =
-    "flex items-center gap-4 px-4 py-2 bg-gray-300 rounded-lg mx-2";
+  const activeLinkClasses = "flex items-center gap-4 px-4 py-2 bg-gray-300 rounded-lg mx-2";
 
   return (
     <aside className="w-64 min-h-screen bg-gray-100 shadow-md">
