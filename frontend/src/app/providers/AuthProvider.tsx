@@ -4,16 +4,16 @@ import { useEffect } from "react";
 import { useCurrentUser } from "../../features/auth/hooks/useCurrentUser";
 import { useAuthStore } from "../store/auth.store";
 
-export function AuthProvider() {
-  const setUser = useAuthStore((state) => state.setUser);
+export default function AuthProvider() {
+    const setUser = useAuthStore((state) => state.setUser);
 
-  const { data } = useCurrentUser();
+    const { data } = useCurrentUser();
 
-  useEffect(() => {
-    if (data?.user) {
-      setUser(data.user);
-    }
-  }, [data]);
+    useEffect(() => {
+        if (data?.user) {
+        setUser(data.user);
+        }
+    }, [data]);
 
-  return null;
+    return null;
 }

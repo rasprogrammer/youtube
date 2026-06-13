@@ -1,7 +1,8 @@
 import { useState } from "react";
 import Header from "./../../../shared/layouts/Header";
 import Sidebar from "./../../../shared/layouts/Sidebar";
-import { AuthProvider } from "../../providers/AuthProvider";
+import AuthProvider from "../../providers/AuthProvider";
+import ChannelProvider from "../../providers/ChannelProvider";
 
 
 export default function MainLayout({children}: {
@@ -17,6 +18,7 @@ export default function MainLayout({children}: {
     return (
         <>
             <AuthProvider />
+            <ChannelProvider />
             <Header onClick={toggleMenu} />
             <div className="flex gap-4">
                 <div className={isOpenMenu ? 'block' : 'hidden'}>

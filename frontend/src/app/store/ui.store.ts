@@ -19,3 +19,18 @@ export const useUIStore = create<UIStore>((set) => ({
         isSidebarOpen: !state.isSidebarOpen,
     })),
 }));
+
+interface CreateChannelModal {
+    isCreateChannelModalOpen: boolean;
+
+    openCreateChannelModal: () => void;
+    closeCreateChannelModal: () => void;
+}
+
+export const useCreateChannelModal = create<CreateChannelModal>((set) => ({
+    isCreateChannelModalOpen: false,
+
+    openCreateChannelModal: () => set({ isCreateChannelModalOpen: true }),
+
+    closeCreateChannelModal: () => set({ isCreateChannelModalOpen: false }),
+}));

@@ -1,8 +1,9 @@
 import { BellIcon, Menu, Mic, PlusIcon, Search } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useCurrentUser } from "../../features/auth/hooks/useCurrentUser";
-import { useChannel } from "../../features/channel/hooks/useChannel";
 import { useAuthStore } from "../../app/store/auth.store";
+import { useMyChannel } from "../../features/channel/hooks/useMyChannel";
+import { useCreateChannelModal, useUIStore } from "../../app/store/ui.store";
+import { CreateChannelModal } from "../../features/channel/components/createChannelModal";
 
 
 export default function Header({ onClick }: { 
@@ -11,16 +12,21 @@ export default function Header({ onClick }: {
 
     const navigate = useNavigate();
 
-    const token = localStorage.getItem("token") || "";
     const user = useAuthStore((state) => state.user);
+    const { data } = useMyChannel();
 
+    const isCreateChannelModalOpen = useCreateChannelModal((state) => state.isCreateChannelModalOpen);
+    const openCreateChannelModal = useCreateChannelModal((state) => state.openCreateChannelModal);
 
     const handleChannelCreate = () => {
         if (!user) navigate("/signin");
 
-        // Open Modal to create channel 
-
-        navigate("/upload");
+        if (data?.channel) {
+            navigate(`/uploads`);
+            return;
+        }
+        
+        openCreateChannelModal();
     }
 
     return (<>
@@ -71,5 +77,8 @@ export default function Header({ onClick }: {
                 </div>
             </div>
         </div>
+
+        { isCreateChannelModalOpen && <CreateChannelModal /> }
+
     </>);
 }
