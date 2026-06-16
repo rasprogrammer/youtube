@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../app/store/auth.store";
 import { useMyChannel } from "../../features/channel/hooks/useMyChannel";
 import { useCreateChannelModal, useUIStore } from "../../app/store/ui.store";
-import { CreateChannelModal } from "../../features/channel/components/createChannelModal";
+import { CreateChannelModal } from "../../features/channel/components/CreateChannelModal";
 
 
 export default function Header({ onClick }: { 
@@ -19,7 +19,10 @@ export default function Header({ onClick }: {
     const openCreateChannelModal = useCreateChannelModal((state) => state.openCreateChannelModal);
 
     const handleChannelCreate = () => {
-        if (!user) navigate("/signin");
+        if (!user) {
+            navigate("/signin");
+            return;
+        }
 
         if (data?.channel) {
             navigate(`/uploads`);

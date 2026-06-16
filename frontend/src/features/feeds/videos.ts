@@ -1,13 +1,13 @@
 import axios from "axios"
 import { HTTP_URL } from "../../config"
-import { getToken } from "../../utils/token"
+import { getToken } from "../../app/utils/authToken"
 
 
 export const videoFeed = async () => {
     try {
         const response = await axios.get(`${HTTP_URL}/videos/feed`, {
             headers: {
-                Authorization: getToken()
+                Authorization: `Bearer ${getToken()}`
             }
         });
         console.log('response > ', response.data); 
@@ -22,7 +22,7 @@ export const recommendationVideos = async () => {
     try {
         const response = await axios.get(`${HTTP_URL}/videos/feed`, {
             headers: {
-                Authorization: getToken()
+                Authorization: `Bearer ${getToken()}`
             }
         });
         console.log('response > ', response.data); 

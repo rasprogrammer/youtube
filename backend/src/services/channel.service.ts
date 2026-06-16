@@ -2,9 +2,11 @@ import { prisma } from "../lib/prisma";
 
 export const createChannelService = async (
     userId: string,
-    channelName: string
+    title: string,
+    handle: string,
+    avatar?: string
 ) => {
-    // check user
+
     const user = await prisma.user.findUnique({
         where: { id: userId }
     });
@@ -13,7 +15,6 @@ export const createChannelService = async (
         throw new Error("USER_NOT_FOUND");
     }
 
-    // check existing channel
     const existingChannel = await prisma.channel.findUnique({
         where: { userId }
     });
@@ -22,11 +23,20 @@ export const createChannelService = async (
         throw new Error("CHANNEL_EXISTS");
     }
 
-    // create
+    const existingHandle = await prisma.channel.findUnique({
+        where: { handle }
+    });
+
+    if (existingHandle) {
+        throw new Error("HANDLE_ALREADY_EXISTS");
+    }
+
     return prisma.channel.create({
         data: {
             userId,
-            channelName
+            title,
+            handle,
+            avatar
         }
     });
 };

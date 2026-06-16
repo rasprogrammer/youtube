@@ -6,7 +6,8 @@ CREATE TYPE "Type" AS ENUM ('UNLISTED', 'PRIVATE', 'PUBLIC');
 
 -- CreateTable
 CREATE TABLE "User" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "firstName" TEXT NOT NULL,
@@ -21,13 +22,13 @@ CREATE TABLE "User" (
 
 -- CreateTable
 CREATE TABLE "Channel" (
-    "id" SERIAL NOT NULL,
-    "channelName" TEXT NOT NULL,
-    "banner" TEXT,
-    "profilePicture" TEXT,
+    "id" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "handle" TEXT NOT NULL,
+    "avatar" TEXT,
     "description" TEXT,
     "subscriberCount" INTEGER NOT NULL DEFAULT 0,
-    "userId" INTEGER NOT NULL,
+    "userId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -36,9 +37,9 @@ CREATE TABLE "Channel" (
 
 -- CreateTable
 CREATE TABLE "Subscription" (
-    "id" SERIAL NOT NULL,
-    "channelId" INTEGER NOT NULL,
-    "userId" INTEGER NOT NULL,
+    "id" TEXT NOT NULL,
+    "channelId" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -47,8 +48,8 @@ CREATE TABLE "Subscription" (
 
 -- CreateTable
 CREATE TABLE "Upload" (
-    "id" SERIAL NOT NULL,
-    "channelId" INTEGER NOT NULL,
+    "id" TEXT NOT NULL,
+    "channelId" TEXT NOT NULL,
     "slug" TEXT NOT NULL,
     "videoUrl" TEXT NOT NULL,
     "thumbnail" TEXT,
@@ -67,9 +68,9 @@ CREATE TABLE "Upload" (
 
 -- CreateTable
 CREATE TABLE "Like" (
-    "id" SERIAL NOT NULL,
-    "userId" INTEGER NOT NULL,
-    "uploadId" INTEGER NOT NULL,
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "uploadId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -78,10 +79,10 @@ CREATE TABLE "Like" (
 
 -- CreateTable
 CREATE TABLE "Comment" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "comment" TEXT NOT NULL,
-    "userId" INTEGER NOT NULL,
-    "uploadId" INTEGER NOT NULL,
+    "userId" TEXT NOT NULL,
+    "uploadId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -90,9 +91,9 @@ CREATE TABLE "Comment" (
 
 -- CreateTable
 CREATE TABLE "WatchHistory" (
-    "id" SERIAL NOT NULL,
-    "userId" INTEGER NOT NULL,
-    "uploadId" INTEGER NOT NULL,
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "uploadId" TEXT NOT NULL,
     "watchedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "WatchHistory_pkey" PRIMARY KEY ("id")
@@ -100,6 +101,9 @@ CREATE TABLE "WatchHistory" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Channel_handle_key" ON "Channel"("handle");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Channel_userId_key" ON "Channel"("userId");

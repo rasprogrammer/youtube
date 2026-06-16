@@ -1,11 +1,12 @@
 import express from "express";
 import { createChannel, updateChannel } from "../controllers/channel.controller";
 import { auth } from "../middlewares/auth";
+import { upload } from "../middlewares/upload.middleware";
 
 const router = express.Router();
 
 // create channel 
-router.post('/', auth, createChannel);
+router.post('/', auth, upload.single('avatar'), createChannel);
 
 // update channel
 router.put('/', auth, updateChannel);

@@ -35,9 +35,9 @@ enum Gender {
 
 model Channel {
   id                String     @id   @default(uuid())
-  channelName       String 
-  banner            String?
-  profilePicture    String?
+  title             String 
+  handle            String      @unique
+  avatar            String?
   description       String?
   subscriberCount   Int     @default(0)
   userId            String     @unique

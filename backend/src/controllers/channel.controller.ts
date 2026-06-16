@@ -16,6 +16,8 @@ export const createChannel = asyncHandler(
             });
         }
 
+        console.log('req.body > ', req.body);
+
         // validate body
         const parsed = createChannelSchema.safeParse(req.body);
 
@@ -26,10 +28,10 @@ export const createChannel = asyncHandler(
             });
         }
 
-        const { channelName } = parsed.data;
+        const { title, handle, avatar } = parsed.data;
 
         try {
-            const channel = await createChannelService(userId, channelName);
+            const channel = await createChannelService(userId, title, handle, avatar);
 
             return res.status(HttpStatus.CREATED).json({
                 success: true,
