@@ -19,13 +19,14 @@ export default function Header({ onClick }: {
     const openCreateChannelModal = useCreateChannelModal((state) => state.openCreateChannelModal);
 
     const handleChannelCreate = () => {
+        console.log('user > ', user);
         if (!user) {
             navigate("/signin");
             return;
         }
 
         if (data?.channel) {
-            navigate(`/uploads`);
+            navigate(`/upload`);
             return;
         }
         

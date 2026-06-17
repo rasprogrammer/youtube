@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { Input } from "../../../shared/components/Input";
 import { useCreateChannelModal } from "../../../app/store/ui.store";
 import { useCreateChannel } from "../hooks/useCreateChannel";
+import { QueryClient } from "@tanstack/react-query";
 
 export const CreateChannelModal = () => {
 
@@ -46,8 +47,9 @@ export const CreateChannelModal = () => {
                 handle,
                 avatar: avatarFile
             },{
-                onSuccess: (data) => {
-                    console.log('data > ', data);
+                onSuccess: (channel) => {
+                    console.log('data > ', channel);
+                    
                     closeCreateChannelModal();
                 },
                 onError: (error) => {

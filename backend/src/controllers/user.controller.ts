@@ -26,7 +26,7 @@ export const getUserChannel = asyncHandler(
         return res.status(HttpStatus.OK).json({
             success: true,
             message: "Channel fetched successfully",
-            data: channel
+            channel: channel
         });
     }
 );

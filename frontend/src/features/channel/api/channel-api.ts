@@ -4,14 +4,11 @@ import { useAuthStore } from "../../../app/store/auth.store";
 import { getToken } from "../../../app/utils/authToken";
 
 
-export const getMyChannel = async () => {
+export const getMyChannel = async (userId: string) => {
 
-    const user = useAuthStore((state) => state.user);
-    if (!user) {
+    if (!userId) {
         throw new Error("User not found");
     }
-
-    const userId = user._id;
 
     try {
         const response = await axios.get(`${HTTP_URL}/users/${userId}/channel`);
