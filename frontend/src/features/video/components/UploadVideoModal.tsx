@@ -7,6 +7,12 @@ interface UploadVideoModalProps {
 export default function UploadVideoModal({
   onClose,
 }: UploadVideoModalProps) {
+
+
+  function handleUploadVideo() {
+    console.log('upload video');
+  }
+
   return (
     <div 
         className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4"
@@ -65,7 +71,12 @@ export default function UploadVideoModal({
               <option value="private">Private</option>
             </select>
 
-            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded cursor-pointer">Upload</button>
+            <button 
+              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
+              onClick={handleUploadVideo}
+              >
+                Upload
+              </button>
           </div>
         </div>
       </div>
